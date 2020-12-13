@@ -1,0 +1,4 @@
+﻿  Tema2CSSO2.cpp
+D:\[Faculty]\III1\[CSSO]\Tema2\Tema2CSSO2\Tema2CSSO2\Tema2CSSO2.cpp(71,30): warning C4805: '==': unsafe mix of type 'BOOL' and type 'bool' in operation
+D:\[Faculty]\III1\[CSSO]\Tema2\Tema2CSSO2\Tema2CSSO2\Tema2CSSO2.cpp(136,17): warning C4101: 'lpExitCode': unreferenced local variable
+  Tema2CSSO2.vcxproj -> D:\[Faculty]\III1\[CSSO]\Tema2\Tema2CSSO2\Debug\Tema2CSSO2.exe
