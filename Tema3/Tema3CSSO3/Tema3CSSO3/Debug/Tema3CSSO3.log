@@ -1,0 +1,3 @@
+﻿  Tema3CSSO3.cpp
+D:\[Faculty]\III1\[CSSO]\Tema3\Tema3CSSO3\Tema3CSSO3\Tema3CSSO3\Tema3CSSO3.cpp(96,12): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+  Tema3CSSO3.vcxproj -> D:\[Faculty]\III1\[CSSO]\Tema3\Tema3CSSO3\Tema3CSSO3\Debug\Tema3CSSO3.exe
