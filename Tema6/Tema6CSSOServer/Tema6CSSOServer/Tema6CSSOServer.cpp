@@ -68,8 +68,6 @@ int main()
             return -1;
         }
 
-        cout << "bine";
-
         if (strcmp(command, "createfile") == 0)
         {
             if (strlen(content) == 0) {
@@ -90,10 +88,13 @@ int main()
                 }
                 else {
                     cout << "createfile succes \n";
+                    CloseHandle(hFile);
+                    return 1;
                 }
-                CloseHandle(hFile);
+
             } else {
                 cout << "Prea multe argumente \n";
+                return -1;
             }
         
         
@@ -128,8 +129,11 @@ int main()
                 cout << "WriteFile() Failure \n";
                 return -1;
             }
-            cout << "appendfile succes \n";
-            CloseHandle(hFile);
+            else {
+                cout << "appendfile succes \n";
+                CloseHandle(hFile);
+                return 1;
+            }
         
         
         } else if (strcmp(command, "deletefile") == 0) {
@@ -140,10 +144,13 @@ int main()
                     cout << "DeleteFile() Failure \n";
                     return -1;
                 }
-                else
+                else {
                     cout << "deletefile succes \n";
+                    return 1;
+                }
             } else {
                 cout << "Prea multe argumente \n";
+                return -1;
             }
         
         
@@ -151,7 +158,6 @@ int main()
             HKEY hKey = NULL;
             string auxiliary = TEXT(filename);
             auxiliary.insert(0, TEXT("SOFTWARE\\CSSO\\"));
-            cout << auxiliary;
             
             if (RegCreateKeyEx(
                 HKEY_LOCAL_MACHINE,
@@ -164,11 +170,75 @@ int main()
                 &hKey,
                 NULL
             ) == ERROR_SUCCESS) {
+                cout << "deletefile succes \n";
                 RegCloseKey(hKey);
+                return 1;
             } else {
-                printf("RegCreateKeyEx error: %d\n", GetLastError());
+                cout <<"RegCreateKeyEx() Failure \n";
                 return -1;
             }
+        
+        
+        } else if (strcmp(command, "deletekey") == 0) {
+            HKEY hKey = NULL;
+            string path;
+            string subkey = filename;
+            path = TEXT("SOFTWARE\\CSSO\\");
+            if (!RegOpenKeyEx(HKEY_LOCAL_MACHINE,
+                path.c_str(),
+                0,
+                KEY_ALL_ACCESS,
+                &hKey)) {
+
+                if (!RegDeleteKey(hKey, subkey.c_str())) {
+                    RegCloseKey(hKey);
+                    cout << "deletefile succes \n";
+                    return 1;
+                }
+                else {
+                    RegCloseKey(hKey);
+                    cout << "RegDeleteKey() Failure \n";
+                    return -1;
+                }
+
+            }
+            else {
+                cout << "RegOpenKeyEx() Failure \n";
+                return -1;
+            }
+
+
+        }
+        else if (strcmp(command, "run") == 0) {
+        STARTUPINFO si;
+        PROCESS_INFORMATION pi;
+
+        ZeroMemory(&si, sizeof(si));
+        si.cb = sizeof(si);
+        ZeroMemory(&pi, sizeof(pi));
+        string path = filename;
+
+        // Start the child process. 
+        if (!CreateProcess(path.c_str(),
+            NULL,       
+            NULL,          
+            NULL,          
+            FALSE,         
+            0,             
+            NULL,          
+            NULL,           
+            &si,           
+            &pi)           
+            )
+        {
+            cout << "CreateProcess() Failure \n";
+            return -1;
+        }
+
+        cout << "run succes \n";
+        CloseHandle(pi.hProcess);
+        CloseHandle(pi.hThread);
+        return 1;
         }
     }
 }
