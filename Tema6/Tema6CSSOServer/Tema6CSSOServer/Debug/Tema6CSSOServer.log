@@ -1,5 +1,5 @@
 ﻿  Tema6CSSOServer.cpp
-D:\[Faculty]\III1\[CSSO]\Tema6\Tema6CSSOServer\Tema6CSSOServer\Tema6CSSOServer.cpp(65,14): warning C4101: 'error_message': unreferenced local variable
-D:\[Faculty]\III1\[CSSO]\Tema6\Tema6CSSOServer\Tema6CSSOServer\Tema6CSSOServer.cpp(150): warning C4715: 'choosefunction': not all control paths return a value
-D:\[Faculty]\III1\[CSSO]\Tema6\Tema6CSSOServer\Tema6CSSOServer\Tema6CSSOServer.cpp(439): warning C4715: 'httpdownload': not all control paths return a value
+D:\[Faculty]\III1\[CSSO]\Tema6\Tema6CSSOServer\Tema6CSSOServer\Tema6CSSOServer.cpp(68,14): warning C4101: 'error_message': unreferenced local variable
+D:\[Faculty]\III1\[CSSO]\Tema6\Tema6CSSOServer\Tema6CSSOServer\Tema6CSSOServer.cpp(159): warning C4715: 'choosefunction': not all control paths return a value
+D:\[Faculty]\III1\[CSSO]\Tema6\Tema6CSSOServer\Tema6CSSOServer\Tema6CSSOServer.cpp(447): warning C4715: 'httpdownload': not all control paths return a value
   Tema6CSSOServer.vcxproj -> D:\[Faculty]\III1\[CSSO]\Tema6\Tema6CSSOServer\Debug\Tema6CSSOServer.exe

